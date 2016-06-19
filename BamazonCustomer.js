@@ -16,18 +16,20 @@ connection.connect(function(err) {
 function displayItems() {
 	connection.query('SELECT * FROM `Products`', function(err, rows, fields) {
  		if (err) throw err;
- 		 	console.log("==== Products Available: ====");
+ 		console.log(" ");
+ 		console.log("==== Products Available: ====");
  		for (i = 0; i < rows.length; i++){
- 			console.log("======== Item ID: " + rows[i].ItemID + " ========");
+ 			console.log(" ");
+ 			console.log("========== ItemID: " + rows[i].ItemID + " ==========");
  			console.log("| Name: " + rows[i].ProductName);
- 			console.log("| Company: " + rows[i].DepartmentName);
+ 			console.log("| Department: " + rows[i].DepartmentName);
  			console.log("| Price: $" + rows[i].Price);
  			console.log("| Left in Stock: " + rows[i].StockQuantity);
  			if (rows[i].ItemID >= 10){
- 				console.log("=============================")
+ 				console.log("================================")
  				console.log(" ");
  			} else {
- 				console.log("============================");
+ 				console.log("===============================");
  			}
  		}
  		buyProduct();
