@@ -15,6 +15,7 @@ connection.connect(function(err) {
 });
 
 function displayOptions(){
+	console.log(" ");
 	inquirer.prompt([
 	{
 		type: "list",
@@ -34,7 +35,7 @@ function displayOptions(){
       			add2Invo();
       		break;
       		case '4) Add New Product':
-      			addNewProduct();
+      			newProductForm();
       		break;
   		}
 	});
@@ -54,7 +55,6 @@ function viewProducts() {
  			console.log("| Left in Stock: " + rows[i].StockQuantity);
  			if (rows[i].ItemID >= 10){
  				console.log("================================")
- 				console.log(" ");
  			} else {
  				console.log("===============================");
  			}
@@ -77,7 +77,6 @@ function viewLowInvo() {
  			console.log("| Left in Stock: " + rows[i].StockQuantity);
  			if (rows[i].ItemID >= 10){
  				console.log("===================================");
- 				console.log(" ");
  			} else {
  				console.log("==================================");
  				console.log(" ");
@@ -123,5 +122,53 @@ function updateStock(newQuantity, itemId) {
  		console.log("Database successfully updated!");
  		console.log(" ");
 		displayOptions();
+ 	});
+}
+
+function newProductForm() {
+	console.log("======== New Product Form ========");
+	console.log(" ");
+		var itemName = {
+			properties: {
+				name: {
+					description: "| Please enter the name of the new item you would like to add"
+				}
+			}
+		};
+		var department = {
+			properties: {
+				departName: {
+					description: "| Please enter the department name of your new item"
+				}
+			}
+		};
+		var price = {
+			properties: {
+				price: {
+					description: "| Please enter the price of the item"
+				}
+			}
+		};
+		var quantity = {
+			properties: {
+				quantity: {
+					description: "| Please enter the quantity you would like to add"
+				}
+			}
+		};
+		prompt.start();
+		prompt.get([itemName, department, price, quantity], function(err, data){
+			addNewProduct(data.name, data.departName, data.price, data.quantity);
+
+		});
+}
+
+function addNewProduct(name, department, price, quantity) {
+	connection.query('INSERT INTO products SET ProductName = ?, DepartmentName = ?, Price = ?, StockQuantity = ?', [name, department, price, quantity], function(err, rows, fields) {
+ 		if (err) throw err;
+ 		console.log(" ");
+ 		console.log("Product successfully added!");
+ 		console.log(" ");
+ 		displayOptions();
  	});
 }
