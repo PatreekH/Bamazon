@@ -20,7 +20,7 @@ function displayOptions(){
 	{
 		type: "list",
 		message: "What would you like to do?",
-		choices: ["1) View Products Sales by Department", "2) Create New Department"],
+		choices: ["1) View Products Sales by Department", "2) Create New Department", "3) Quit"],
 		name: "choice"
 	}
 	]).then(function (answers) {
@@ -31,7 +31,12 @@ function displayOptions(){
     		case '2) Create New Department':
       			createNewDepartment();
       		break;
-      		//Add quit option
+      		case '3) Quit':
+      			console.log(" ");
+      			console.log("Thank you for using Bamazon Executive!")
+      			console.log(" ");
+      		 	connection.end();
+      		break;
   		}
 	});
 }

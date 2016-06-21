@@ -1,5 +1,6 @@
 var prompt = require('prompt');
 var mysql = require('mysql');
+var inquirer = require('inquirer');
 var connection = mysql.createConnection({
   host: 'localhost',
   port: 3306,
@@ -64,7 +65,9 @@ function makePurchase(itemId, quantity){
  		//If yes run for loop, if no run buyProduct again
  		for (i = 0; i < rows.length; i++){
  			var finalTotal = rows[i].Price * quantity;
+ 			var newQuantity = rows[i].StockQuantity - quantity;
  			if (quantity > rows[i].StockQuantity){
+ 				console.log(rows[i].StockQuantity);
  				console.log(" ");
  				console.log("Insufficient quantity! Please try again!");
  				console.log(" ");
@@ -86,29 +89,35 @@ function makePurchase(itemId, quantity){
  				console.log("-----------------------------");
  				console.log("Thank you for shopping with Bamazon!");
  				console.log(" ");
- 				updateStock(itemId, quantity);
+ 				updateStock(itemId, newQuantity);
  				updateTotalSales(finalTotal, rows[i].DepartmentName);
  			}
  		}
  	});
 }
 
-function updateStock(itemId, quantityPurchased){
-	connection.query('SELECT * FROM `Products` WHERE `ItemID` = "' + itemId + '"' , function(err, rows, fields) {
- 		if (err) throw err;
- 		for (i = 0; i < rows.length; i++){
- 			var newQuantity = rows[i].StockQuantity -= quantityPurchased;
- 			updateItemDB(itemId, newQuantity)
- 		}
- 	});
-}
-
-function updateItemDB(itemId, newQuantity){
+function updateStock(itemId, newQuantity){
 	connection.query('UPDATE `Products` SET `StockQuantity` = "' + newQuantity + '" WHERE `ItemID` = "' + itemId + '"', function(err, rows, fields) {
  		if (err) throw err;
  		//Would you like to keep shopping?
  		//If yes run displayItems, if no console log "Come back soon!" & connection.end
- 		connection.end();
+ 		inquirer.prompt([
+		{
+			type: "list",
+			message: "Would you like to keep shopping?",
+			choices: ["Yes", "No"],
+			name: "choice"
+		}
+		]).then(function (answers) {
+ 			if (answers.choice == "Yes"){
+ 				displayItems();
+ 			} else {
+ 				connection.end();
+ 				console.log(" ");
+ 				console.log("Thank you for using Bamazon, come back soon!");
+ 				consolelog(" ");
+ 			}
+ 		});
  	});
 }
 

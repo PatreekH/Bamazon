@@ -20,7 +20,7 @@ function displayOptions(){
 	{
 		type: "list",
 		message: "What would you like to do?",
-		choices: ["1) View Products for Sale", "2) View Low Inventory", "3) Add to Inventory", "4) Add New Product"],
+		choices: ["1) View Products for Sale", "2) View Low Inventory", "3) Add to Inventory", "4) Add New Product", "5) Quit"],
 		name: "choice"
 	}
 	]).then(function (answers) {
@@ -37,7 +37,12 @@ function displayOptions(){
       		case '4) Add New Product':
       			newProductForm();
       		break;
-      		//Add quit option
+      		case '5) Quit':
+      			console.log(" ");
+      			console.log("Thank you for using Bamazon Manager!")
+      			console.log(" ");
+      		 	connection.end();
+      		break;
   		}
 	});
 }
