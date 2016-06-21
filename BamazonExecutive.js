@@ -46,9 +46,9 @@ function viewProductsSales() {
 			console.log("===============================");
 			console.log("| Department Id: " + rows[i].DepartmentID);
 			console.log("| Department Name: " + rows[i].DepartmentName);
-			console.log("| OverHead Costs: " + rows[i].OverHeadCosts);
-			console.log("| Total Sales: " + rows[i].TotalSales);
-			console.log("| Total Profit: " + totalProfit);
+			console.log("| OverHead Costs: $" + rows[i].OverHeadCosts);
+			console.log("| Total Sales: $" + rows[i].TotalSales);
+			console.log("| Total Profit: $" + totalProfit);
 			console.log("===============================");
 		}
 		displayOptions();
