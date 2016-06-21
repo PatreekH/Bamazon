@@ -15,6 +15,15 @@ connection.connect(function(err) {
 });
 
 function displayItems() {
+	console.log(" ");
+	console.log("Welcome to:")
+	console.log("  _____                                      ");
+	console.log(" |  _  |                                     ");
+	console.log(" | |_) | __ _ _ __ ____  __ _ ___________ ___ ");
+	console.log(" |  _ < / _` | '_ ` _  |/ _` |_  / _ } | '_  | ");
+	console.log(" | |_) | (_| | | | | | | (_| |/ { (_) )| | | |");
+	console.log(" |____/|__,__|_| |_| |_|L__,_/___{___/ |_| |_|" );
+	console.log(" ");
 	connection.query('SELECT * FROM `Products`', function(err, rows, fields) {
  		if (err) throw err;
  		console.log(" ");
