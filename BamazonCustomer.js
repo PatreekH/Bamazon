@@ -63,6 +63,7 @@ function makePurchase(itemId, quantity){
  		//Your new total is: Does this look correct?
  		//If yes run for loop, if no run buyProduct again
  		for (i = 0; i < rows.length; i++){
+ 			var finalTotal = rows[i].Price * quantity;
  			if (quantity > rows[i].StockQuantity){
  				console.log(" ");
  				console.log("Insufficient quantity! Please try again!");
@@ -80,32 +81,40 @@ function makePurchase(itemId, quantity){
  				console.log("| ");
  				console.log("| Price per item: $" + rows[i].Price);
  				console.log("| ");
- 				console.log("| Total: $" + rows[i].Price * quantity);
+ 				console.log("| Total: $" + finalTotal);
  				console.log("| ");
  				console.log("-----------------------------");
  				console.log("Thank you for shopping with Bamazon!");
  				console.log(" ");
  				updateStock(itemId, quantity);
+ 				updateTotalSales(finalTotal, rows[i].DepartmentName);
  			}
  		}
  	});
 }
 
-function updateStock(itemId, quantityPurchased) {
+function updateStock(itemId, quantityPurchased){
 	connection.query('SELECT * FROM `Products` WHERE `ItemID` = "' + itemId + '"' , function(err, rows, fields) {
  		if (err) throw err;
  		for (i = 0; i < rows.length; i++){
  			var newQuantity = rows[i].StockQuantity -= quantityPurchased;
- 			updateDB(itemId, newQuantity)
+ 			updateItemDB(itemId, newQuantity)
  		}
  	});
 }
 
-function updateDB(itemId, newQuantity){
+function updateItemDB(itemId, newQuantity){
 	connection.query('UPDATE `Products` SET `StockQuantity` = "' + newQuantity + '" WHERE `ItemID` = "' + itemId + '"', function(err, rows, fields) {
  		if (err) throw err;
  		//Would you like to keep shopping?
  		//If yes run displayItems, if no console log "Come back soon!" & connection.end
  		connection.end();
+ 	});
+}
+
+function updateTotalSales(purchaseTotal, departmentName){
+	connection.query('UPDATE `Departments` SET `TotalSales` = "' + purchaseTotal + '" WHERE `DepartmentName` = "' + departmentName + '"', function(err, rows, fields) {
+ 		if (err) throw err;
+ 		//connection.end();
  	});
 }

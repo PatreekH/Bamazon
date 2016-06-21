@@ -37,6 +37,7 @@ function displayOptions(){
       		case '4) Add New Product':
       			newProductForm();
       		break;
+      		//Add quit option
   		}
 	});
 }
@@ -164,7 +165,7 @@ function newProductForm() {
 }
 
 function addNewProduct(name, department, price, quantity) {
-	connection.query('INSERT INTO products SET ProductName = ?, DepartmentName = ?, Price = ?, StockQuantity = ?', [name, department, price, quantity], function(err, rows, fields) {
+	connection.query('INSERT INTO `Products` SET ProductName = ?, DepartmentName = ?, Price = ?, StockQuantity = ?', [name, department, price, quantity], function(err, rows, fields) {
  		if (err) throw err;
  		console.log(" ");
  		console.log("Product successfully added!");
