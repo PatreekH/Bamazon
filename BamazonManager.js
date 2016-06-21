@@ -35,12 +35,11 @@ function displayOptions(){
       			add2Invo();
       		break;
       		case '4) Add New Product':
-      			newProductForm();
+      			departmentList();
       		break;
       		case '5) Quit':
       			console.log(" ");
       			console.log("Thank you for using Bamazon Manager!")
-      			console.log(" ");
       		 	connection.end();
       		break;
   		}
@@ -131,42 +130,47 @@ function updateStock(newQuantity, itemId) {
  	});
 }
 
-function newProductForm() {
+function departmentList() {
+	var currentDepartments = [];
+ 		connection.query('SELECT * FROM `Departments`', function (error, data) {
+ 			for (var i = 0; i < data.length; i++) {
+ 				currentDepartments.push(data[i].DepartmentName);
+ 			}
+ 			newProductForm(currentDepartments);
+  		});
+}
+
+function newProductForm(currentDepartments) {
+	console.log(" ");
 	console.log("======== New Product Form ========");
 	console.log(" ");
-		var itemName = {
-			properties: {
-				name: {
-					description: "| Please enter the name of the new item you would like to add"
-				}
-			}
-		};
-		var department = {
-			properties: {
-				departName: {
-					description: "| Please enter the department name of your new item"
-				}
-			}
-		};
-		var price = {
-			properties: {
-				price: {
-					description: "| Please enter the price of the item"
-				}
-			}
-		};
-		var quantity = {
-			properties: {
-				quantity: {
-					description: "| Please enter the quantity you would like to add"
-				}
-			}
-		};
-		prompt.start();
-		prompt.get([itemName, department, price, quantity], function(err, data){
-			addNewProduct(data.name, data.departName, data.price, data.quantity);
+	inquirer.prompt([
+		{
+			type: "input",
+			message: "| Please enter the name of the new item you would like to add:",
+			name: "name"
+		},
+		{
+			type: "list",
+			message: "| Please select the department of your new item:",
+			choices: currentDepartments,
+			name: "department"
+		},
+		{
+			type: "input",
+			message: "| Please enter the price of the item",
+			name: "price"
+		},
+		{
+			type: "input",
+			message: "| Please enter the quantity you would like to add",
+			name: "quantity"
+		}
 
-		});
+		]).then(function (answers) {
+			addNewProduct(answers.name, answers.department, answers.price, answers.quantity);
+	});
+
 }
 
 function addNewProduct(name, department, price, quantity) {
@@ -174,7 +178,6 @@ function addNewProduct(name, department, price, quantity) {
  		if (err) throw err;
  		console.log(" ");
  		console.log("Product successfully added!");
- 		console.log(" ");
  		displayOptions();
  	});
 }

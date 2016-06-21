@@ -11,19 +11,19 @@ var connection = mysql.createConnection({
 
 connection.connect(function(err) {
 	if (err) throw err;
-	displayItems();
-});
-
-function displayItems() {
 	console.log(" ");
-	console.log("Welcome to:")
-	console.log("  _____                                      ");
-	console.log(" |  _  |                                     ");
+	console.log(" Welcome to: ")
+	console.log("  ____                                      ");
+	console.log(" |  _ ]                                     ");
 	console.log(" | |_) | __ _ _ __ ____  __ _ ___________ ___ ");
 	console.log(" |  _ < / _` | '_ ` _  |/ _` |_  / _ } | '_  | ");
 	console.log(" | |_) | (_| | | | | | | (_| |/ { (_) )| | | |");
 	console.log(" |____/|__,__|_| |_| |_|L__,_/___{___/ |_| |_|" );
 	console.log(" ");
+	displayItems();
+});
+
+function displayItems() {
 	connection.query('SELECT * FROM `Products`', function(err, rows, fields) {
  		if (err) throw err;
  		console.log(" ");
@@ -89,7 +89,7 @@ function makePurchase(itemId, quantity){
  				console.log("| ");
  				console.log("| Name: " + rows[i].ProductName);
  				console.log("| ");
- 				console.log("| Quantity Selected: " + quantity);
+ 				console.log("| Quantity Purchased: " + quantity);
  				console.log("| ");
  				console.log("| Price per item: $" + rows[i].Price);
  				console.log("| ");
@@ -108,8 +108,6 @@ function makePurchase(itemId, quantity){
 function updateStock(itemId, newQuantity){
 	connection.query('UPDATE `Products` SET `StockQuantity` = "' + newQuantity + '" WHERE `ItemID` = "' + itemId + '"', function(err, rows, fields) {
  		if (err) throw err;
- 		//Would you like to keep shopping?
- 		//If yes run displayItems, if no console log "Come back soon!" & connection.end
  		inquirer.prompt([
 		{
 			type: "list",
@@ -121,10 +119,10 @@ function updateStock(itemId, newQuantity){
  			if (answers.choice == "Yes"){
  				displayItems();
  			} else {
- 				connection.end();
  				console.log(" ");
  				console.log("Thank you for using Bamazon, come back soon!");
- 				consolelog(" ");
+ 				console.log(" ");
+ 				connection.end();
  			}
  		});
  	});

@@ -34,7 +34,6 @@ function displayOptions(){
       		case '3) Quit':
       			console.log(" ");
       			console.log("Thank you for using Bamazon Executive!")
-      			console.log(" ");
       		 	connection.end();
       		break;
   		}
@@ -48,13 +47,13 @@ function viewProductsSales() {
 		//console.log(rows);
 		for (i = 0; i < rows.length; i++){
 			var totalProfit = rows[i].TotalSales - rows[i].OverHeadCosts;
-			console.log("===============================");
+			console.log("====================================");
 			console.log("| Department Id: " + rows[i].DepartmentID);
 			console.log("| Department Name: " + rows[i].DepartmentName);
 			console.log("| OverHead Costs: $" + rows[i].OverHeadCosts);
 			console.log("| Total Sales: $" + rows[i].TotalSales);
 			console.log("| Total Profit: $" + totalProfit);
-			console.log("===============================");
+			console.log("====================================");
 		}
 		displayOptions();
 	});
@@ -79,7 +78,6 @@ function createNewDepartment(){
 	prompt.start();
 	prompt.get([departmentName, ohCost], function(err, data){
 		var currSales = 0;
-			//console.log(data.id, data.quantity);
 		connection.query('INSERT INTO `Departments` SET DepartmentName = ?, OverHeadCosts = ?, TotalSales = ?', [data.name, data.overHead, currSales], function(err, rows, fields) {
  			if (err) throw err;
  			console.log(" ");
