@@ -9,10 +9,11 @@ var connection = mysql.createConnection({
   database: 'Bamazon'
 });
 
+//If connection is good then console logs the following
 connection.connect(function(err) {
 	if (err) throw err;
 	console.log(" ");
-	console.log(" Welcome to: ")
+	console.log(" Welcome to: ");
 	console.log("  ____                                      ");
 	console.log(" |  _ ]                                     ");
 	console.log(" | |_) | __ _ _ __ ____  __ _ ___________ ___ ");
@@ -23,6 +24,8 @@ connection.connect(function(err) {
 	displayItems();
 });
 
+
+//Displays items after welcome console.log
 function displayItems() {
 	connection.query('SELECT * FROM `Products`', function(err, rows, fields) {
  		if (err) throw err;
