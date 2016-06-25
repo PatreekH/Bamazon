@@ -25,7 +25,7 @@ connection.connect(function(err) {
 });
 
 
-//Displays items after welcome console.log
+//Displays items after welcome console.log shows
 function displayItems() {
 	connection.query('SELECT * FROM `Products`', function(err, rows, fields) {
  		if (err) throw err;
@@ -49,6 +49,7 @@ function displayItems() {
  	});
 }
 
+//Prompts the user to enter the ID and quantity of the desired product
 function buyProduct(){
 	var item = {
 		properties: {
@@ -70,6 +71,7 @@ function buyProduct(){
 		})
 };
 
+//Makes sure the purchased item has enough quantity in stock, returns a receipt to the user
 function makePurchase(itemId, quantity){
 	connection.query('SELECT * FROM `Products` WHERE `ItemID` = "' + itemId + '"' , function(err, rows, fields) {
  		if (err) throw err;
@@ -101,14 +103,15 @@ function makePurchase(itemId, quantity){
  				console.log("-----------------------------");
  				console.log("Thank you for shopping with Bamazon!");
  				console.log(" ");
- 				updateStock(itemId, newQuantity);
+ 				continueShopping(itemId, newQuantity);
  				updateTotalSales(finalTotal, rows[i].DepartmentName);
  			}
  		}
  	});
 }
 
-function updateStock(itemId, newQuantity){
+//asks the user if they would like to continue shopping
+function continueShopping(itemId, newQuantity){
 	connection.query('UPDATE `Products` SET `StockQuantity` = "' + newQuantity + '" WHERE `ItemID` = "' + itemId + '"', function(err, rows, fields) {
  		if (err) throw err;
  		inquirer.prompt([
@@ -131,6 +134,7 @@ function updateStock(itemId, newQuantity){
  	});
 }
 
+//updates the database
 function updateTotalSales(purchaseTotal, departmentName){
 	connection.query('UPDATE `Departments` SET `TotalSales` = "' + purchaseTotal + '" WHERE `DepartmentName` = "' + departmentName + '"', function(err, rows, fields) {
  		if (err) throw err;
